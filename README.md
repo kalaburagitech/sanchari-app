@@ -4,16 +4,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server:
 
-```bash
+########   Run Backend   #########
+
+cd sanchari-backend
+
+npx ts-node-dev src/server.ts
+
+-----it will show the mongodb running on 5000----
+
+
+
+########   Run Frontend   #########
+
+cd sanchari-frontend
+
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
-```
 
+----it will run client on
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
