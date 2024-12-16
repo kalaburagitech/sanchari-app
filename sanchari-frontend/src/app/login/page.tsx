@@ -1,15 +1,42 @@
 // src/app/login/page.tsx
 "use client";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // Next.js router
+import axios from "axios"; // To make the API call
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // To display login error
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter(); // Next.js router for navigation
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log("Logging in with", { email, password });
+
+    try {
+      // Make the login request to the backend
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      // Check for a successful response (token received)
+      if (response.status === 200) {
+        const { token } = response.data; // Get token from response
+        localStorage.setItem("token", token); // Store token in localStorage
+
+        // Redirect to the dashboard page after successful login
+        router.push("/dashboard");
+      }
+    } catch (error: any) {
+      // Handle errors (e.g., invalid credentials)
+      setError("Invalid credentials. Please try again.");
+    }
   };
 
   return (
@@ -51,6 +78,8 @@ const Login = () => {
               required
             />
           </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}{" "}
+          {/* Error message */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
